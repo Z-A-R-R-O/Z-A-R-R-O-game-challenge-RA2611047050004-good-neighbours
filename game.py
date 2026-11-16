@@ -8,27 +8,15 @@ import sys
 import math
 from pathlib import Path
 import pygame
+from src.core.config import (
+    WIDTH, HEIGHT, FPS, WORLD, PLAYER_SPEED,
+    AFTERNOON_SECONDS, LOADING_SECONDS,
+    CREAM, PAPER, GREEN, LIGHT_GREEN, SKY,
+    TERRACOTTA, CHARCOAL, GOLD, WHITE, RED
+)
 from src.entities.world import Thing
+from src.systems.audio import AudioManager
 from src.systems.quests import QuestManager
-
-WIDTH, HEIGHT = 1152, 720
-FPS = 60
-WORLD = pygame.Rect(24, 92, WIDTH - 48, HEIGHT - 116)
-PLAYER_SPEED = 220
-AFTERNOON_SECONDS = 480
-LOADING_SECONDS = 8.0
-
-# Warm, readable palette. All artwork is drawn in code, so no external assets are needed.
-CREAM = (241, 233, 215)
-PAPER = (230, 217, 184)
-GREEN = (53, 94, 74)
-LIGHT_GREEN = (111, 151, 103)
-SKY = (117, 152, 165)
-TERRACOTTA = (217, 140, 99)
-CHARCOAL = (38, 51, 45)
-GOLD = (235, 190, 77)
-WHITE = (255, 250, 240)
-RED = (185, 83, 74)
 
 
 class Game:
@@ -46,8 +34,7 @@ class Game:
         self.small = pygame.font.Font(None, 20)
         self.title = pygame.font.Font(None, 52)
         self.logo = pygame.font.Font(None, 76)
-        self.music_volume = 0.28
-        self.music_muted = False
+        self.audio = AudioManager(asset_dir=Path(__file__).with_name("assets"), default_volume=0.28)
         self.menu_quotes = [
             "\"Small kindnesses make very loud happiness.\"",
             "\"A good neighbour knows where the spare biscuits are.\"",
@@ -56,7 +43,7 @@ class Game:
             "\"Maple Street runs on tea, trust, and occasionally borrowed ladders.\"",
         ]
         self.load_assets()
-        self.start_ambient_music()
+        self.audio.start_ambient_music()
         self.state = "LOADING"
         self.loading_elapsed = 0.0
         self.reset()
@@ -94,22 +81,24 @@ class Game:
         pw, ph = portraits.get_size()
         self.portraits = [portraits.subsurface(pygame.Rect(i * pw // 4, 0, pw // 4, ph)).copy() for i in range(4)]
 
+    @property
+    def music_volume(self) -> float:
+        return self.audio.volume
+
+    @music_volume.setter
+    def music_volume(self, val: float) -> None:
+        self.audio.volume = val
+
+    @property
+    def music_muted(self) -> bool:
+        return self.audio.muted
+
+    @music_muted.setter
+    def music_muted(self, val: bool) -> None:
+        self.audio.muted = val
+
     def start_ambient_music(self) -> None:
-        """Play an optional, project-owned ambient loop when one is available."""
-        asset_dir = Path(__file__).with_name("assets")
-        # Prefer the approved project soundtrack; retain OGG as a lightweight fallback.
-        track = asset_dir / "good_neighbours_bg.mp3"
-        if not track.exists():
-            track = asset_dir / "ambient.ogg"
-        if not track.exists() or not pygame.mixer.get_init():
-            return
-        try:
-            pygame.mixer.music.load(track)
-            pygame.mixer.music.set_volume(self.music_volume)
-            pygame.mixer.music.play(-1)
-        except pygame.error:
-            # An invalid optional audio file must never prevent the game from launching.
-            return
+        self.audio.start_ambient_music()
 
     def reset(self) -> None:
         self.player = pygame.Rect(365, 550, 24, 28)
@@ -405,15 +394,10 @@ class Game:
         self.blit_scaled(sprite, box.inflate(-4, -4))
 
     def change_music_volume(self, amount: float) -> None:
-        self.music_volume = max(0.0, min(1.0, self.music_volume + amount))
-        self.music_muted = self.music_volume == 0
-        if pygame.mixer.get_init():
-            pygame.mixer.music.set_volume(0 if self.music_muted else self.music_volume)
+        self.audio.change_volume(amount)
 
     def toggle_music(self) -> None:
-        self.music_muted = not self.music_muted
-        if pygame.mixer.get_init():
-            pygame.mixer.music.set_volume(0 if self.music_muted else self.music_volume)
+        self.audio.toggle_mute()
 
     def draw_flowerbed(self, rect: pygame.Rect, colors: tuple[tuple[int, int, int], ...]) -> None:
         """Small hand-drawn garden beds fill the town without obscuring routes."""
