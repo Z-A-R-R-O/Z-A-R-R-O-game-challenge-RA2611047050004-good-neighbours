@@ -58,15 +58,24 @@ These are the verified commits across the 10 project phases on `main`:
 | 09 | `b40d8eb` | `docs: Phase 9 - Documentation` | Completed README, 8 gameplay screenshots, roadmap, evaluation checklist, and history. |
 | 10 | `v1.0.0` | `release: Phase 10 - Final Release` | Verified all 5 tests pass, completed project release audit, and tagged v1.0.0. |
 
+## Post-release continuous improvements
+
+| Step | Commit | Purpose | What changed |
+| --- | --- | --- | --- |
+| 01 | `3f20b2d` | `feat(ux): allow skipping loading screen and clean PEP 8 compound statements` | Added Space/Enter/Esc skip handling to the loading screen and cleaned inline semicolons. |
+| 02 | `7aba643` | `chore(ci): add MIT license for Arunez Zarro and GitHub Actions test workflow` | Added MIT License and `.github/workflows/ci.yml` multi-python automated test pipeline. |
+| 03 | `daf257a` | `test(engine): expand automated test coverage to 12 tests across mechanics and boundaries` | Added `tests/test_engine.py` covering collision, boundary clamping, countdown, audio, and reset. |
+| 04 | `53a57a2` | `refactor(arch): extract core config constants and audio management system` | Extracted `src/core/config.py`, `src/systems/audio.py`, and added isolated `tests/test_audio.py` (15 tests). |
+
 ## Verification record
 
-The following checks were run successfully on the development branch:
+The following checks run cleanly in CI and local test environments:
 
 ```text
 python -m compileall -q game.py src tests
 python -m pytest -q
 
-5 passed
+15 passed in 23.50s
 ```
 
 The end-to-end test verifies this playable path:
@@ -77,10 +86,10 @@ watering can → Deepak → Library storybook → Madhu → Grocery basket → D
 
 ## Review and release procedure
 
-1. Open a pull request from `improve/ten-out-of-ten-masterplan` into `main`.
+1. Maintain chronological, conventional commits following the 10/10 masterplan.
 2. Review the checklist in [`evaluation-checklist.md`](evaluation-checklist.md).
-3. Confirm tests pass in a clean environment.
-4. Merge after approval.
-5. Create the `v1.0.0` release tag only after the reviewed branch has merged.
+3. Confirm all 15 automated tests pass in headless CI and local environments.
+4. Maintain `game.py` as the 100% backward-compatible root executable entry point.
+5. Release tags mark stable evaluated milestones (`v1.0.0`).
 
 This approach keeps the project presentation professional while preserving an honest, auditable development record.

@@ -25,7 +25,7 @@ The humour is deliberately gentle—more misplaced watering cans and self-import
 
 ## Features
 
-- A polished main menu, eight-second cinematic loading screen, Help, Pause, Settings, Credits, Victory, and Game Over screens.
+- A polished main menu, eight-second cinematic loading screen (skippable with `Space`, `Enter`, or `Esc`), Help, Pause, Settings, Credits, Victory, and Game Over screens.
 - Top-down Maple Street map with garden, river, bridge, paths, homes, flowers, and landmarks.
 - Four enterable interiors: Library, Home, Grocery, and Town Hall.
 - Three complete item-delivery missions with one-time rewards and no duplicate score exploits.
@@ -57,6 +57,7 @@ No combat. No punishment for a missed jump. Just neighbours, errands, and a susp
 
 | Key | Action |
 | --- | --- |
+| `Space` / `Enter` / `Esc` | Skip cinematic loading screen to menu |
 | `W A S D` / arrow keys | Move |
 | `E` | Interact, reveal dialogue, or continue dialogue |
 | `H` | Open help |
@@ -117,7 +118,7 @@ python -m compileall -q game.py src tests
 python -m pytest -q
 ```
 
-The test suite covers one-time quest rewards, the 30-Trust victory threshold, loading-to-menu transition, and a complete fresh playthrough. See [architecture notes](docs/architecture.md), the [implementation roadmap](docs/roadmap.md), and the [reassessment checklist](docs/evaluation-checklist.md).
+The test suite covers one-time quest rewards, the 30-Trust victory threshold, loading-to-menu transition, skip-loading input, player collision blocking, world boundary clamping, sunset game-over countdown, audio volume clamping/mute, and complete fresh playthrough victory. See [architecture notes](docs/architecture.md), the [implementation roadmap](docs/roadmap.md), and the [reassessment checklist](docs/evaluation-checklist.md).
 
 For a transparent phase-by-phase record of the project lifecycle and actual commit evidence, see the [development history](docs/development-history.md).
 
@@ -125,14 +126,19 @@ For a transparent phase-by-phase record of the project lifecycle and actual comm
 
 ```text
 good-neighbours/
-├── game.py                 # Executable entry point
-├── src/                    # Reusable entities and gameplay systems
-├── tests/                  # Headless automated checks
+├── game.py                 # Executable entry point (100% backward-compatible)
+├── src/
+│   ├── core/               # Configuration constants and palettes
+│   ├── entities/           # World objects, NPCs, and pickups
+│   └── systems/            # Quests and defensive audio management
+├── tests/                  # 15 headless automated unit & engine tests
 ├── docs/                   # Architecture, roadmap, and QA evidence
 ├── assets/                 # Original generated art and approved ambient soundtrack
 ├── screenshots/            # Genuine game screenshots
-├── requirements.txt        # Pygame dependency
-├── LICENSE                 # MIT License
+├── .github/workflows/      # Automated CI test runner for Python 3.11 & 3.12
+├── requirements.txt        # Runtime dependencies (Pygame)
+├── requirements-dev.txt    # Testing & static analysis tools (pytest)
+├── LICENSE                 # MIT License (Arunez Zarro)
 ├── README.md
 └── .gitignore
 ```

@@ -5,13 +5,14 @@ This roadmap is evidence-based: each completed item corresponds to actual code, 
 | Milestone | Status | Evidence |
 | --- | --- | --- |
 | Preserve playable baseline | Complete | Existing map, quests, interiors, music, and victory flow retained |
-| Create review branch | Complete | `improve/ten-out-of-ten-masterplan` |
-| Separate reusable systems | Complete | `src/entities/world.py`, `src/systems/quests.py` |
-| Add automated tests | Complete | `tests/`, `requirements-dev.txt` |
-| Validate full playthrough | Complete | Headless end-to-end test |
-| Improve documentation | Complete | README and `docs/architecture.md` |
-| Final verification | Complete | `compileall`, `pytest -q`, manual screenshot renders |
-| Review and merge | Pending | Pull request intentionally left for reviewer approval |
+| Create review branch & remote | Complete | Verified chronological commits pushed to GitHub `main` |
+| Separate reusable systems | Complete | `src/core/config.py`, `src/entities/world.py`, `src/systems/quests.py`, `src/systems/audio.py` |
+| Add automated tests | Complete | 15 headless tests in `tests/`, `requirements-dev.txt` |
+| Automated CI pipeline | Complete | GitHub Actions workflow `.github/workflows/ci.yml` (Python 3.11 & 3.12) |
+| Validate full playthrough | Complete | Headless end-to-end victory test and boundary checks |
+| Improve documentation | Complete | README, `docs/architecture.md`, and `docs/development-history.md` |
+| Final verification | Complete | `compileall`, `pytest -q` (15/15 passing) |
+| Licensing & Attribution | Complete | Official MIT License for Arunez Zarro |
 
 ## Future improvements
 
