@@ -30,4 +30,6 @@ game.py (Game)
 
 ## Test strategy
 
-`tests/test_quests.py` verifies progression logic independently. `tests/test_game_flow.py` uses headless SDL/Pygame to verify loading and the full can → book → groceries → victory path.
+- `tests/test_quests.py` verifies mission progression, trust rewards, and duplicate prevention independently.
+- `tests/test_engine.py` verifies collision blocking, world boundary clamping, afternoon countdown game-over trigger, audio clamping/mute, and lifecycle reset.
+- `tests/test_game_flow.py` uses headless SDL/Pygame to verify the loading-to-menu transition, skip-loading input, and the full end-to-end victory path.
