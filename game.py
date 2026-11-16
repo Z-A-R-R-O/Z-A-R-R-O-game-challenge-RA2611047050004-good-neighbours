@@ -250,19 +250,30 @@ class Game:
 
     def handle_event(self, event: pygame.event.Event) -> None:
         if event.type == pygame.QUIT:
-            pygame.quit(); sys.exit()
+            pygame.quit()
+            sys.exit()
         if event.type != pygame.KEYDOWN:
             return
         key = event.key
-        if self.state == "MENU":
-            if key in (pygame.K_RETURN, pygame.K_SPACE): self.state = "PLAYING"
-            elif key == pygame.K_h: self.state = "HELP"
-            elif key == pygame.K_c: self.state = "CREDITS"
-            elif key in (pygame.K_q, pygame.K_ESCAPE): pygame.quit(); sys.exit()
+        if self.state == "LOADING":
+            if key in (pygame.K_RETURN, pygame.K_SPACE, pygame.K_ESCAPE):
+                self.state = "MENU"
+        elif self.state == "MENU":
+            if key in (pygame.K_RETURN, pygame.K_SPACE):
+                self.state = "PLAYING"
+            elif key == pygame.K_h:
+                self.state = "HELP"
+            elif key == pygame.K_c:
+                self.state = "CREDITS"
+            elif key in (pygame.K_q, pygame.K_ESCAPE):
+                pygame.quit()
+                sys.exit()
         elif self.state == "HELP":
-            if key in (pygame.K_ESCAPE, pygame.K_RETURN, pygame.K_h): self.state = "MENU"
+            if key in (pygame.K_ESCAPE, pygame.K_RETURN, pygame.K_h):
+                self.state = "MENU"
         elif self.state == "CREDITS":
-            if key in (pygame.K_ESCAPE, pygame.K_RETURN, pygame.K_c): self.state = "MENU"
+            if key in (pygame.K_ESCAPE, pygame.K_RETURN, pygame.K_c):
+                self.state = "MENU"
         elif self.state in ("PLAYING", "INTERIOR"):
             if key == pygame.K_e:
                 if self.dialogue_active:
@@ -272,24 +283,43 @@ class Game:
                         self.dialogue_active = False
                 else:
                     self.interact()
-            elif key in (pygame.K_ESCAPE, pygame.K_p): self.state = "PAUSED"
-            elif key == pygame.K_h: self.state = "HELP_PLAY"
-            elif key == pygame.K_q: pygame.quit(); sys.exit()
+            elif key in (pygame.K_ESCAPE, pygame.K_p):
+                self.state = "PAUSED"
+            elif key == pygame.K_h:
+                self.state = "HELP_PLAY"
+            elif key == pygame.K_q:
+                pygame.quit()
+                sys.exit()
         elif self.state == "HELP_PLAY":
-            if key in (pygame.K_ESCAPE, pygame.K_RETURN, pygame.K_h): self.state = "PLAYING"
+            if key in (pygame.K_ESCAPE, pygame.K_RETURN, pygame.K_h):
+                self.state = "PLAYING"
         elif self.state == "PAUSED":
-            if key in (pygame.K_ESCAPE, pygame.K_p, pygame.K_RETURN): self.state = "PLAYING"
-            elif key == pygame.K_s: self.state = "SETTINGS"
-            elif key == pygame.K_r: self.reset(); self.state = "PLAYING"
-            elif key == pygame.K_q: pygame.quit(); sys.exit()
+            if key in (pygame.K_ESCAPE, pygame.K_p, pygame.K_RETURN):
+                self.state = "PLAYING"
+            elif key == pygame.K_s:
+                self.state = "SETTINGS"
+            elif key == pygame.K_r:
+                self.reset()
+                self.state = "PLAYING"
+            elif key == pygame.K_q:
+                pygame.quit()
+                sys.exit()
         elif self.state == "SETTINGS":
-            if key in (pygame.K_ESCAPE, pygame.K_s, pygame.K_RETURN): self.state = "PAUSED"
-            elif key == pygame.K_m: self.toggle_music()
-            elif key in (pygame.K_RIGHT, pygame.K_UP, pygame.K_EQUALS): self.change_music_volume(0.05)
-            elif key in (pygame.K_LEFT, pygame.K_DOWN, pygame.K_MINUS): self.change_music_volume(-0.05)
+            if key in (pygame.K_ESCAPE, pygame.K_s, pygame.K_RETURN):
+                self.state = "PAUSED"
+            elif key == pygame.K_m:
+                self.toggle_music()
+            elif key in (pygame.K_RIGHT, pygame.K_UP, pygame.K_EQUALS):
+                self.change_music_volume(0.05)
+            elif key in (pygame.K_LEFT, pygame.K_DOWN, pygame.K_MINUS):
+                self.change_music_volume(-0.05)
         elif self.state in ("VICTORY", "GAME_OVER"):
-            if key == pygame.K_r: self.reset(); self.state = "PLAYING"
-            elif key in (pygame.K_q, pygame.K_ESCAPE): pygame.quit(); sys.exit()
+            if key == pygame.K_r:
+                self.reset()
+                self.state = "PLAYING"
+            elif key in (pygame.K_q, pygame.K_ESCAPE):
+                pygame.quit()
+                sys.exit()
 
     def update(self, dt: float) -> None:
         if self.state == "LOADING":
@@ -314,8 +344,10 @@ class Game:
         self.time_left -= dt
         self.game_time += dt
         self.message_visible = min(len(self.message), self.message_visible + dt * 58)
-        if self.quests.victory_reached: self.state = "VICTORY"
-        elif self.time_left <= 0: self.state = "GAME_OVER"
+        if self.quests.victory_reached:
+            self.state = "VICTORY"
+        elif self.time_left <= 0:
+            self.state = "GAME_OVER"
 
     def text(self, value: str, pos: tuple[int, int], color=CHARCOAL, font=None, center=False) -> None:
         image = (font or self.font).render(value, True, color)
@@ -337,7 +369,8 @@ class Game:
         for word in words:
             candidate = f"{current} {word}".strip()
             if current and chosen.size(candidate)[0] > max_width:
-                lines.append(current); current = word
+                lines.append(current)
+                current = word
             else:
                 current = candidate
         return lines + ([current] if current else [])
@@ -461,7 +494,8 @@ class Game:
             self.text(guide, label.center, GREEN, self.small, center=True)
         if near:
             prompt = "Pick up" if near.kind in ("can", "book", "groceries") else "Talk to"
-            tag = pygame.Rect(0, 0, 230, 31); tag.midbottom = (near.rect.centerx, near.rect.top - 10)
+            tag = pygame.Rect(0, 0, 230, 31)
+            tag.midbottom = (near.rect.centerx, near.rect.top - 10)
             self.panel(tag, WHITE)
             self.text(f"[E] {prompt} {near.name}", tag.center, CHARCOAL, self.small, center=True)
 
@@ -500,7 +534,9 @@ class Game:
             self.text(str(index + 1), (slot.left + 4, slot.top + 2), WHITE, self.small)
         if self.dialogue_active:
             # Conversations pause the world and use resident portraits as a proper cutscene.
-            shade = pygame.Surface((WIDTH, HEIGHT), pygame.SRCALPHA); shade.fill((14, 25, 18, 58)); self.screen.blit(shade, (0, 0))
+            shade = pygame.Surface((WIDTH, HEIGHT), pygame.SRCALPHA)
+            shade.fill((14, 25, 18, 58))
+            self.screen.blit(shade, (0, 0))
             box = pygame.Rect(76, HEIGHT - 180, 850, 128)
             self.panel(box, WHITE)
             portrait_index = {"Deepak": 0, "Madhu": 1, "Dhinesh": 2, "Nethra": 3}.get(self.speaker)
@@ -550,21 +586,29 @@ class Game:
         near = self.nearest()
         if near:
             action = "Leave" if near.kind == "exit_library" else "Examine"
-            prompt = pygame.Rect(0, 0, 220, 30); prompt.midbottom = (near.rect.centerx, max(130, near.rect.top - 8))
+            prompt = pygame.Rect(0, 0, 220, 30)
+            prompt.midbottom = (near.rect.centerx, max(130, near.rect.top - 8))
             self.panel(prompt, WHITE)
             self.text(f"[E] {action}: {near.name}", prompt.center, CHARCOAL, self.small, center=True)
 
     def overlay(self, heading: str, lines: list[str], footer: str) -> None:
-        shade = pygame.Surface((WIDTH, HEIGHT), pygame.SRCALPHA); shade.fill((20, 30, 25, 185)); self.screen.blit(shade, (0, 0))
-        box = pygame.Rect(145, 100, 670, 430); self.panel(box, CREAM)
+        shade = pygame.Surface((WIDTH, HEIGHT), pygame.SRCALPHA)
+        shade.fill((20, 30, 25, 185))
+        self.screen.blit(shade, (0, 0))
+        box = pygame.Rect(145, 100, 670, 430)
+        self.panel(box, CREAM)
         self.text(heading, (WIDTH // 2, 155), GREEN, self.title, center=True)
-        for index, line in enumerate(lines): self.text(line, (WIDTH // 2, 220 + index * 32), CHARCOAL, self.font, center=True)
+        for index, line in enumerate(lines):
+            self.text(line, (WIDTH // 2, 220 + index * 32), CHARCOAL, self.font, center=True)
         self.text(footer, (WIDTH // 2, 485), TERRACOTTA, self.font, center=True)
 
     def draw_settings(self) -> None:
         """A focused settings card that remains readable over the living map."""
-        shade = pygame.Surface((WIDTH, HEIGHT), pygame.SRCALPHA); shade.fill((16, 28, 20, 195)); self.screen.blit(shade, (0, 0))
-        box = pygame.Rect(280, 148, 590, 415); self.panel(box, CREAM)
+        shade = pygame.Surface((WIDTH, HEIGHT), pygame.SRCALPHA)
+        shade.fill((16, 28, 20, 195))
+        self.screen.blit(shade, (0, 0))
+        box = pygame.Rect(280, 148, 590, 415)
+        self.panel(box, CREAM)
         self.text("SETTINGS", (box.centerx, box.top + 55), GREEN, self.title, center=True)
         self.text("SOUND & COMFORT", (box.centerx, box.top + 91), TERRACOTTA, self.small, center=True)
         icon_box = pygame.Rect(box.left + 56, box.top + 142, 58, 58)
@@ -586,7 +630,9 @@ class Game:
     def draw_victory(self) -> None:
         """Celebratory finale artwork with a quiet readable conclusion panel."""
         self.screen.blit(self.victory_art, (0, 0))
-        shade = pygame.Surface((WIDTH, HEIGHT), pygame.SRCALPHA); shade.fill((15, 38, 30, 110)); self.screen.blit(shade, (0, 0))
+        shade = pygame.Surface((WIDTH, HEIGHT), pygame.SRCALPHA)
+        shade.fill((15, 38, 30, 110))
+        self.screen.blit(shade, (0, 0))
         panel = pygame.Rect(202, 88, 748, 244)
         pygame.draw.rect(self.screen, (21, 54, 42), panel, border_radius=16)
         pygame.draw.rect(self.screen, GOLD, panel, 3, border_radius=16)
@@ -601,7 +647,9 @@ class Game:
 
     def draw_credits(self) -> None:
         self.screen.blit(self.loading_art, (0, 0))
-        shade = pygame.Surface((WIDTH, HEIGHT), pygame.SRCALPHA); shade.fill((12, 34, 26, 170)); self.screen.blit(shade, (0, 0))
+        shade = pygame.Surface((WIDTH, HEIGHT), pygame.SRCALPHA)
+        shade.fill((12, 34, 26, 170))
+        self.screen.blit(shade, (0, 0))
         panel = pygame.Rect(292, 100, 568, 500)
         pygame.draw.rect(self.screen, CREAM, panel, border_radius=16)
         pygame.draw.rect(self.screen, GOLD, panel, 3, border_radius=16)
@@ -624,7 +672,9 @@ class Game:
     def draw(self) -> None:
         if self.state == "LOADING":
             self.screen.blit(self.loading_art, (0, 0))
-            shade = pygame.Surface((WIDTH, HEIGHT), pygame.SRCALPHA); shade.fill((16, 42, 30, 120)); self.screen.blit(shade, (0, 0))
+            shade = pygame.Surface((WIDTH, HEIGHT), pygame.SRCALPHA)
+            shade.fill((16, 42, 30, 120))
+            self.screen.blit(shade, (0, 0))
             self.blit_scaled(self.logo_art, pygame.Rect(126, 82, 900, 300))
             self.text("A LITTLE TOWN. A LOT OF KINDNESS.", (WIDTH // 2, 400), WHITE, self.font, center=True)
             pygame.draw.rect(self.screen, PAPER, (WIDTH // 2 - 150, HEIGHT - 40, 300, 7), border_radius=4)
@@ -632,8 +682,11 @@ class Game:
         elif self.state == "MENU":
             # A distinct community-board menu, so it does not repeat the title loading card.
             self.draw_world()
-            shade = pygame.Surface((WIDTH, HEIGHT), pygame.SRCALPHA); shade.fill((20, 35, 25, 125)); self.screen.blit(shade, (0, 0))
-            board = pygame.Rect(126, 125, 430, 345); self.panel(board, CREAM)
+            shade = pygame.Surface((WIDTH, HEIGHT), pygame.SRCALPHA)
+            shade.fill((20, 35, 25, 125))
+            self.screen.blit(shade, (0, 0))
+            board = pygame.Rect(126, 125, 430, 345)
+            self.panel(board, CREAM)
             self.text("MAPLE STREET", (board.centerx, 175), GREEN, self.title, center=True)
             self.text("COMMUNITY BOARD", (board.centerx, 216), TERRACOTTA, self.font, center=True)
             self.text("Three neighbours are waiting for a little help.", (board.centerx, 270), CHARCOAL, self.small, center=True)
@@ -648,9 +701,11 @@ class Game:
         elif self.state == "VICTORY":
             self.draw_victory()
         elif self.state == "INTERIOR":
-            self.draw_interior(); self.draw_hud()
+            self.draw_interior()
+            self.draw_hud()
         else:
-            self.draw_world(); self.draw_hud()
+            self.draw_world()
+            self.draw_hud()
             if self.state in ("HELP", "HELP_PLAY"):
                 self.overlay("HOW TO HELP", ["Move: W A S D or arrow keys", "E: talk to neighbours or pick up items", "Complete all three requests to earn 30 Trust.", "H: this help screen   •   ESC / P: pause"], "Press H, ENTER, or ESC to return")
             elif self.state == "PAUSED":
@@ -664,8 +719,10 @@ class Game:
     def run(self) -> None:
         while True:
             dt = self.clock.tick(FPS) / 1000
-            for event in pygame.event.get(): self.handle_event(event)
-            self.update(dt); self.draw()
+            for event in pygame.event.get():
+                self.handle_event(event)
+            self.update(dt)
+            self.draw()
 
 
 if __name__ == "__main__":

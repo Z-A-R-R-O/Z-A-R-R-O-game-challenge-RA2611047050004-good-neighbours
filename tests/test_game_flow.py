@@ -23,6 +23,15 @@ def test_loading_transitions_to_menu() -> None:
     pygame.quit()
 
 
+def test_loading_screen_can_be_skipped() -> None:
+    game = Game()
+    assert game.state == "LOADING"
+    skip_event = pygame.event.Event(pygame.KEYDOWN, key=pygame.K_SPACE)
+    game.handle_event(skip_event)
+    assert game.state == "MENU"
+    pygame.quit()
+
+
 def test_fresh_playthrough_reaches_victory() -> None:
     game = Game()
     game.update(LOADING_SECONDS + 0.1)
