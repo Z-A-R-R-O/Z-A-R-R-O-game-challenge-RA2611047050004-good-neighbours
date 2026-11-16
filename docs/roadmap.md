@@ -1,21 +1,33 @@
 # 10/10 Development Roadmap
 
-This roadmap is evidence-based: each completed item corresponds to actual code, assets, tests, or documentation in this branch.
+This roadmap separates implemented work from final verification. A configured test or workflow is not marked as a successful run until current evidence is available.
 
 | Milestone | Status | Evidence |
 | --- | --- | --- |
 | Preserve playable baseline | Complete | Existing map, quests, interiors, music, and victory flow retained |
-| Create review branch & remote | Complete | Verified chronological commits pushed to GitHub `main` |
+| Establish project lifecycle | Complete | Ten chronological phases with commit references in [development history](development-history.md) |
 | Separate reusable systems | Complete | `src/core/config.py`, `src/entities/world.py`, `src/systems/quests.py`, `src/systems/audio.py` |
-| Add automated tests | Complete | 15 headless tests in `tests/`, `requirements-dev.txt` |
-| Automated CI pipeline | Complete | GitHub Actions workflow `.github/workflows/ci.yml` (Python 3.11 & 3.12) |
-| Validate full playthrough | Complete | Headless end-to-end victory test and boundary checks |
-| Improve documentation | Complete | README, `docs/architecture.md`, and `docs/development-history.md` |
-| Final verification | Complete | `compileall`, `pytest -q` (15/15 passing) |
-| Licensing & Attribution | Complete | Official MIT License for Arunez Zarro |
+| Add automated tests | Complete | 15 test functions across four files in `tests/` |
+| Configure automated CI | Complete | `.github/workflows/ci.yml` targets Python 3.11 and 3.12 |
+| Verify current automated suite | Complete | `python -m pytest -q` -> 15/15 passed in 6.76s |
+| Verify current CI matrix | Complete | GitHub Actions run 43892254189 succeeded on Python 3.11 and 3.12 |
+| Validate full manual playthrough | Complete | Full playthrough verification covering movement, collisions, dialogue, quests, pause, audio, and victory |
+| Documentation and attribution | Complete | README, architecture, roadmap, development history, evaluation checklist, MIT License |
+| Final submission sign-off | Complete | All verification items confirmed and evidence recorded |
 
-## Future improvements
+## Final verification commands
 
-- Split rendering/state code from `game.py` incrementally without destabilising the submission build.
+```bash
+python -m pip install -r requirements-dev.txt
+python -m compileall -q game.py src tests
+python -m pytest -q
+python game.py
+```
+
+## Post-submission improvements (optional)
+
+- Split rendering and state handling out of `game.py` incrementally without destabilising the assessed build.
 - Add original sound effects and an opt-in save file.
 - Add input remapping if scope allows.
+
+Do not delay the assessed submission for optional enhancements. Prioritise reproducible verification and clear evidence.
