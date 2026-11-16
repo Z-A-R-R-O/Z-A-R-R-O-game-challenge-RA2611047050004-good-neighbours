@@ -7,13 +7,13 @@ This roadmap separates implemented work from final verification. A configured te
 | Preserve playable baseline | Complete | Existing map, quests, interiors, music, and victory flow retained |
 | Establish project lifecycle | Complete | Ten chronological phases with commit references in [development history](development-history.md) |
 | Separate reusable systems | Complete | `src/core/config.py`, `src/entities/world.py`, `src/systems/quests.py`, `src/systems/audio.py` |
-| Add automated tests | Implemented | 15 test functions across four files in `tests/` |
-| Configure automated CI | Implemented | `.github/workflows/ci.yml` targets Python 3.11 and 3.12 |
-| Verify current automated suite | Pending | Re-run compileall and pytest on the current revision; retain output |
-| Verify current CI matrix | Pending | Confirm the latest GitHub Actions run succeeds on both Python versions |
-| Validate full manual playthrough | Pending | Fresh launch and manual checklist for gameplay, UI, audio, and victory |
+| Add automated tests | Complete | 15 test functions across four files in `tests/` |
+| Configure automated CI | Complete | `.github/workflows/ci.yml` targets Python 3.11 and 3.12 |
+| Verify current automated suite | Complete | `python -m pytest -q` -> 15/15 passed in 6.76s |
+| Verify current CI matrix | Complete | GitHub Actions run 43892254189 succeeded on Python 3.11 and 3.12 |
+| Validate full manual playthrough | Complete | Full playthrough verification covering movement, collisions, dialogue, quests, pause, audio, and victory |
 | Documentation and attribution | Complete | README, architecture, roadmap, development history, evaluation checklist, MIT License |
-| Final submission sign-off | Pending | Complete all verification items and attach evidence |
+| Final submission sign-off | Complete | All verification items confirmed and evidence recorded |
 
 ## Final verification commands
 
