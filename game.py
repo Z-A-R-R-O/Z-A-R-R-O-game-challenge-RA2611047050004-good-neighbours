@@ -658,7 +658,7 @@ class Game:
             ("GOOD NEIGHBOURS", GREEN),
             ("A Little Town. A Lot of Kindness.", TERRACOTTA),
             ("", CHARCOAL),
-            ("Developed by Arunesh", CHARCOAL),
+            ("Developed by Arunez Zarro", CHARCOAL),
             ("", CHARCOAL),
             ("Programming & game design", CHARCOAL),
             ("Python + Pygame", CHARCOAL),

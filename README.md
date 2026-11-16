@@ -2,6 +2,9 @@
 
 > **A Little Town. A Lot of Kindness.**
 
+[![CI Test Suite](https://github.com/Z-A-R-R-O/Z-A-R-R-O-game-challenge-RA2611047050004-good-neighbours/actions/workflows/ci.yml/badge.svg)](https://github.com/Z-A-R-R-O/Z-A-R-R-O-game-challenge-RA2611047050004-good-neighbours/actions)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+
 ![Loading screen](screenshots/loading.png)
 
 GOOD NEIGHBOURS is a cosy, top-down Python adventure about the kind of heroism that rarely gets a cape: returning a watering can, carrying a book, and showing up when a neighbour needs a hand. On Maple Street, three small favours are enough to turn a quiet afternoon into a lantern-lit community gathering.
@@ -129,14 +132,16 @@ good-neighbours/
 ├── assets/                 # Original generated art and approved ambient soundtrack
 ├── screenshots/            # Genuine game screenshots
 ├── requirements.txt        # Pygame dependency
+├── LICENSE                 # MIT License
 ├── README.md
 └── .gitignore
 ```
 
 ## Credits
 
-- **Game design and development:** Arunesh
+- **Game design and development:** Arunez Zarro
 - **Engine and input:** [Pygame](https://www.pygame.org/)
+- **License:** [MIT License](LICENSE)
 - **Artwork:** Original generated project assets in `assets/`
 - **Music:** Project-approved ambient soundtrack in `assets/good_neighbours_bg.mp3`
 
